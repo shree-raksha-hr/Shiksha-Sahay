@@ -17,7 +17,7 @@ const materialRoutes = require('./routes/materials');
 const chatRoutes = require('./routes/chat');
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://raksha:raksha@cluster0.6djwex5.mongodb.net/tution_support?retryWrites=true&w=majority&appName=Cluster0').then(() => {
+mongoose.connect(process.env.MONGODB_URI).then(() => {
   console.log('Connected to MongoDB');
 }).catch(err => {
   console.error('MongoDB connection error:', err);
