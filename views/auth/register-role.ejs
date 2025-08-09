@@ -1,0 +1,95 @@
+
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>
+                        <% if (role === 'volunteer') { %>
+                            <i class="fas fa-hands-helping me-2"></i>Volunteer Registration
+                        <% } else if (role === 'school') { %>
+                            <i class="fas fa-school me-2"></i>School Registration
+                        <% } else { %>
+                            <i class="fas fa-user-graduate me-2"></i>Student Registration
+                        <% } %>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <% if (error) { %>
+                        <div class="alert alert-danger"><%= error %></div>
+                    <% } %>
+                    
+                    <form method="POST" action="/auth/register">
+                        <input type="hidden" name="role" value="<%= role %>">
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" rows="2"></textarea>
+                        </div>
+                        
+                        <!-- Role-specific fields -->
+                        <% if (role === 'school') { %>
+                            <div class="mb-3">
+                                <label for="schoolName" class="form-label">School Name</label>
+                                <input type="text" class="form-control" id="schoolName" name="schoolName" required>
+                            </div>
+                        <% } else if (role === 'student') { %>
+                            <div class="mb-3">
+                                <label for="grade" class="form-label">Grade</label>
+                                <select class="form-control" id="grade" name="grade" required>
+                                    <option value="">Select Grade</option>
+                                    <% for (let i = 1; i <= 12; i++) { %>
+                                        <option value="<%= i %>">Grade <%= i %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        <% } else if (role === 'volunteer') { %>
+                            <div class="mb-3">
+                                <label class="form-label">Subjects You Can Teach</label>
+                                <div class="row">
+                                    <% ['Mathematics', 'Science', 'English', 'Hindi', 'Social Studies', 'Computer Science'].forEach(subject => { %>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="subjects" value="<%= subject %>" id="<%= subject %>">
+                                                <label class="form-check-label" for="<%= subject %>">
+                                                    <%= subject %>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        <% } %>
+                        
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="/auth/login">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

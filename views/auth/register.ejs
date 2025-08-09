@@ -1,0 +1,74 @@
+
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3><i class="fas fa-user-plus me-2"></i>Choose Your Role</h3>
+                </div>
+                <div class="card-body">
+                    <% if (error) { %>
+                        <div class="alert alert-danger"><%= error %></div>
+                    <% } %>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 role-card" onclick="selectRole('volunteer')">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-hands-helping fa-3x text-primary mb-3"></i>
+                                    <h5>Volunteer</h5>
+                                    <p class="small">Teach students and share your knowledge</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 role-card" onclick="selectRole('school')">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-school fa-3x text-success mb-3"></i>
+                                    <h5>School</h5>
+                                    <p class="small">Post class requirements and manage sessions</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 role-card" onclick="selectRole('student')">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-user-graduate fa-3x text-info mb-3"></i>
+                                    <h5>Student</h5>
+                                    <p class="small">Access materials and get AI support</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <p>Already have an account? <a href="/auth/login">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function selectRole(role) {
+    window.location.href = `/auth/register/${role}`;
+}
+
+// Add hover effect to role cards
+document.querySelectorAll('.role-card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.classList.add('shadow-lg');
+        this.style.transform = 'translateY(-5px)';
+        this.style.cursor = 'pointer';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.classList.remove('shadow-lg');
+        this.style.transform = 'translateY(0)';
+    });
+});
+</script>

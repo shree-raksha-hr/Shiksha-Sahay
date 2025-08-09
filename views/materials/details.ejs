@@ -1,0 +1,106 @@
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4><%= material.title %></h4>
+                    <span class="badge bg-<%= material.type === 'video' ? 'info' : material.type === 'audio' ? 'warning' : 'success' %> fs-6">
+                        <i class="fas fa-<%= material.type === 'video' ? 'play' : material.type === 'audio' ? 'volume-up' : 'file-text' %> me-1"></i>
+                        <%= material.type.charAt(0).toUpperCase() + material.type.slice(1) %>
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h6>Description</h6>
+                        <p><%= material.description %></p>
+                    </div>
+                    
+                    <div class="content-section">
+                        <% if (material.type === 'text') { %>
+                            <div class="text-content">
+                                <%- material.content %>
+                            </div>
+                        <% } else if (material.type === 'video') { %>
+                            <div class="video-content">
+                                <% if (material.content.includes('youtube.com') || material.content.includes('youtu.be')) { %>
+                                    <div class="ratio ratio-16x9">
+                                        <iframe src="<%= material.content.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/') %>" 
+                                                allowfullscreen></iframe>
+                                    </div>
+                                <% } else { %>
+                                    <video controls class="w-100">
+                                        <source src="<%= material.content %>" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                <% } %>
+                            </div>
+                        <% } else if (material.type === 'audio') { %>
+                            <div class="audio-content">
+                                <audio controls class="w-100">
+                                    <source src="<%= material.content %>" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        <% } %>
+                    </div>
+                    
+                    <% if (material.tags && material.tags.length > 0) { %>
+                        <div class="mt-4">
+                            <h6>Tags</h6>
+                            <% material.tags.forEach(tag => { %>
+                                <span class="badge bg-light text-dark me-2"><%= tag %></span>
+                            <% }) %>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="card-footer">
+                    <a href="/materials" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Materials
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Material Info</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-book text-primary me-2"></i>
+                        <span><strong>Subject:</strong> <%= material.subject %></span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-graduation-cap text-primary me-2"></i>
+                        <span><strong>Grade:</strong> <%= material.grade %></span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-user text-primary me-2"></i>
+                        <span><strong>Uploaded by:</strong> <%= material.uploadedBy.name %></span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-calendar text-primary me-2"></i>
+                        <span><strong>Date:</strong> <%= new Date(material.createdAt).toLocaleDateString() %></span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-<%= material.type === 'video' ? 'play' : material.type === 'audio' ? 'volume-up' : 'file-text' %> text-primary me-2"></i>
+                        <span><strong>Type:</strong> <%= material.type.charAt(0).toUpperCase() + material.type.slice(1) %></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>Related Materials</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">More materials from the same subject and grade will be shown here.</p>
+                    <a href="/materials?subject=<%= material.subject %>&grade=<%= material.grade %>" class="btn btn-sm btn-outline-primary">
+                        View Similar Materials
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Classes</h2>
+                <% if (user.role === 'school') { %>
+                    <a href="/classes/create" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Create New Class
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <% if (classes.length > 0) { %>
+        <div class="row">
+            <% classes.forEach(classItem => { %>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0"><%= classItem.title %></h6>
+                            <span class="badge bg-<%= classItem.status === 'booked' ? 'success' : classItem.status === 'available' ? 'warning' : 'secondary' %>">
+                                <%= classItem.status.charAt(0).toUpperCase() + classItem.status.slice(1) %>
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><%= classItem.description.substring(0, 100) %>...</p>
+                            <p class="small text-muted">
+                                <strong>Subject:</strong> <%= classItem.subject %><br>
+                                <strong>Grade:</strong> <%= classItem.grade %><br>
+                                <strong>Date:</strong> <%= new Date(classItem.date).toLocaleDateString() %><br>
+                                <strong>Duration:</strong> <%= classItem.duration %> minutes
+                            </p>
+                            <% if (classItem.schoolId) { %>
+                                <p class="small">
+                                    <strong>School:</strong> <%= classItem.schoolId.schoolName || classItem.schoolId.name %>
+                                </p>
+                            <% } %>
+                            <% if (classItem.volunteerId) { %>
+                                <p class="small">
+                                    <strong>Volunteer:</strong> <%= classItem.volunteerId.name %>
+                                </p>
+                            <% } %>
+                        </div>
+                        <div class="card-footer">
+                            <a href="/classes/<%= classItem._id %>" class="btn btn-primary btn-sm">View Details</a>
+                            <% if (user.role === 'volunteer' && classItem.status === 'available') { %>
+                                <form method="POST" action="/classes/<%= classItem._id %>/book" class="d-inline">
+                                    <button type="submit" class="btn btn-success btn-sm">Book Class</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="text-center">
+            <i class="fas fa-chalkboard-teacher fa-5x text-muted mb-3"></i>
+            <h4>No Classes Available</h4>
+            <p class="text-muted">
+                <% if (user.role === 'school') { %>
+                    You haven't created any classes yet. <a href="/classes/create">Create your first class</a>
+                <% } else { %>
+                    There are no classes available at the moment. Please check back later.
+                <% } %>
+            </p>
+        </div>
+    <% } %>
+</div>
